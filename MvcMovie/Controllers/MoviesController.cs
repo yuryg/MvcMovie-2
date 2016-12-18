@@ -3,6 +3,8 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using MvcMovie.Models;
+using System;
+using System.Collections.Generic;
 
 namespace MvcMovie.Controllers
 {
@@ -11,9 +13,42 @@ namespace MvcMovie.Controllers
         private MovieDbContext db = new MovieDbContext();
 
         // GET: Movies
-        public ActionResult Index()
+        // Изменяем метод для добавления возможности поиска
+        // public ActionResult Index()
+        public ActionResult Index (string movieGenre,string searchString)
         {
-            return View(db.Movies.ToList());
+            // Версия метода №2 добавляет поиск по жанру
+            var GenreLst = new List<string>();
+
+            var GenreQry = from d in db.Movies
+                           orderby d.Genre
+                           select d.Genre;
+            GenreLst.AddRange(GenreQry.Distinct());
+            ViewBag.movieGenre = new SelectList(GenreLst);
+
+            // Это версия метода №1.
+            // Можно определить метод так: public ActionResult Index (string id)
+            // В данном случае id это параметр id из нашей маршрутизации {controller}/{action}/{id}
+            // тогда в теле метода добавим: string searchString = id; (далее без изменений)
+            var movies = from m in db.Movies
+                         select m;
+
+            if(!String.IsNullOrEmpty(searchString))
+            {
+                movies = movies.Where(s => s.Title.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(movieGenre))
+            {
+                movies = movies.Where(x => x.Genre == movieGenre);
+            }
+
+
+            //return View(db.Movies.ToList()); Это "самый первый" вариант, когда вьюшка получала просто список фильмов
+            return View(movies);
+            //Поиск работает, если в адресной строке ввести запрос, например:
+            //(верно для конкретного моего примера) ?searchString=Crime
+            //Теперь нужно изменить Index view, чтобы запрос можно было делать в окне браузера
         }
 
         // GET: Movies/Details/5
