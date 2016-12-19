@@ -7,6 +7,7 @@ namespace MvcMovie.Models
     public class Movie
     {
         public int ID { get; set; }
+        [Display(Name = "Название")]
         public string Title { get; set; }
 
         [Display(Name="Дата выхода")]
@@ -14,7 +15,10 @@ namespace MvcMovie.Models
         [DisplayFormat(DataFormatString ="{0:dd-MM-yyyy}", ApplyFormatInEditMode =true)]
         public DateTime ReleasedDate { get; set; }
         public string Genre { get; set; }
+
+        [Display(Name = "Цена")]
         public decimal Price { get; set; }
+        public string Rating { get; set; }
     }
 
     public class MovieDbContext:DbContext
