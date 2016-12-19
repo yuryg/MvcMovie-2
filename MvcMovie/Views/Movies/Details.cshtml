@@ -1,13 +1,13 @@
 ﻿@model MvcMovie.Models.Movie
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Описание";
 }
 
-<h2>Details</h2>
+<h2>Описание</h2>
 
 <div>
-    <h4>Movie</h4>
+    <h4>Фильм</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -41,10 +41,16 @@
         <dd>
             @Html.DisplayFor(model => model.Price)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Rating)
+        </dt>
 
+        <dd>
+            @Html.DisplayFor(model => model.Rating)
+        </dd>
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Редактировать", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Вернуться к списку", "Index")
 </p>
